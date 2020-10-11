@@ -1,318 +1,145 @@
-# @CODE_CO :) | TELEGRAM: @CODE_CO | GITHUB: CODE-CO ------------------------------------------------|
-import re, os, shutil
-PATH = os.getcwd()
-INPUT = "@CODE_CO :)"
-BASENAME = os.path.basename(__file__)
-os.system("CLS" if os.name == "nt" else "clear")
-print("| @CODE_CO :) | TELEGRAM: @CODE_CO | GITHUB: CODE-CO |")
-#----------------------------------------------------------------------------------------------------|
-print("""|____________________________________________________|
-|_____________________|COMMANDS|_____________________|
-|ENTER '00' OR 'FILES' TO SHOW FILES.                |
-|ENTER '01' OR 'LOWER' TO LOWERCASE ALL FILES.       |
-|ENTER '02' OR 'UPPER' TO UPPERCASE ALL FILES.       |
-|ENTER '03' OR 'REMOVE' TO REMOVE ALL FILES.         |
-|ENTER '04' OR 'ADD' TO ADD A TEXT TO FILENAMES.     |
-|ENTER '05' OR 'SORT' TO SORT THE FOLDER.            |
-|ENTER '06' OR 'SORT FF' TO SORT FILES WITH FOLDERS. |
-|ENTER '07' OR 'SORT FOLDER' TO SORT FOLDERS.        |
-|ENTER '08' OR 'UPPER FOLDERS' TO UPPERCASE 2 FOLDER.|
-|ENTER '09' OR 'CLEAR' TO CLEAR THE SHELL.           |
-|ENTER '10' OR 'SELECT' TO SELECT A FILE.            |  
-|ENTER '11' OR 'HELP' TO SHOW THE HELP COMMAND AGAIN.|
-|ENTER '12' OR 'EXIT' FOR EXIT OF THIS PROGRAM. :)   |
-|____________________________________________________|""")
-#----------------------------------------------------------------------------------------------------|
-while INPUT != "EXIT" and INPUT != "12":
-    try:
-        INPUT = input("\nINPUT: ").upper()
-        FILES = list(os.listdir(PATH))
-        FILES.remove(BASENAME)
-    except:
-        print("\nERROR ! PROGRAM MAY NOT WORK CORRECTLY.")
-#----------------------------------------------------------------------------------------------------|  
-    if INPUT == "FILES" or INPUT == "0":
-        try:
-            print()
-            COUNTER = 0
-            for i in FILES:
-                print(str(COUNTER) + "- " + i)
-                COUNTER +=1
-            COUNTER = 0
-            print("\nCOMPLETED.")
-            continue
-        except:
-            print("\nERROR !")
-            continue
-#----------------------------------------------------------------------------------------------------|
-    if INPUT == "LOWER" or INPUT == "1":
-        try:
-            for i in FILES:
-                os.rename(i, i.lower())
-            print("\nCOMPLETED.")
-            continue
-        except:
-            print("\nERROR !")
-            continue
-#----------------------------------------------------------------------------------------------------|
-    if INPUT == "UPPER" or INPUT == "2":
-        try:
-            for i in FILES:
-                os.rename(i, i.upper())
-            print("\nCOMPLETED.")
-            continue
-        except:
-            print("\nERROR !")
-            continue
-#----------------------------------------------------------------------------------------------------|
-    if INPUT == "REMOVE" or INPUT == "3":
-        try:
-            CHECK = input("\nARE YOU SURE? (Y/N): ")
-            if CHECK == "Y" or "YES":
-                for i in FILES:
-                    try:
-                        os.remove(i)
-                    except:
-                        os.rmdir(i)
-            else:
-                if CHECK == "N" or "NO":
-                    print("\nOK")
-                else:
-                    print("\nWRONG INPUT !")
-            print("\nCOMPLETED.")
-            continue
-        except:
-            print("\nERROR !")
-            continue
-#----------------------------------------------------------------------------------------------------|
-    if INPUT == "ADD" or INPUT == "4":
-        try:
-            ADD = input("\nPLEASE ENTER YOUR TEXT TO ADD IN FILE NAME: ")
-            ADD_LOCATION = input("\nOK YOU WANT ADD IT IN FIRST OR END OF FILE NAME? ")
-            if ADD_LOCATION == "FIRST":
-                for i in FILES:
-                    os.rename(i, ADD + i)
-            if ADD_LOCATION == "END":
-                for i in FILES:
-                    BOOLEAN = os.path.isdir(i)
-                    if BOOLEAN:
-                        os.rename(i, i + ADD)
-                    else:
-                        try:
-                            EXT = re.findall(r"(.*)(\..+)", i)
-                            A, B = EXT[0]
-                            os.rename(i, A + ADD + B)
-                        except:
-                            os.rename(i, i + ADD)
-                            print("\nWE GOT ERROR FOR THIS FILE ({0}) BUT WE DID THE JOB.".format(i))
-            print("\nCOMPLETED.")
-            continue
-        except:
-            print("\nERROR !")
-            continue
-#----------------------------------------------------------------------------------------------------|  
-    if INPUT == "SORT" or INPUT == "5":
-        try:
-            for i in FILES:
-                BOOLEAN = os.path.isdir(i)
-                try:
-                    EXT = re.findall(r"(.*)(\..+)", i)
-                    A, B = EXT[0]
-                    B = B[1:].upper()
-                except:
-                    BOOLEAN = True
-                try:
-                    if BOOLEAN:
-                        pass
-                    else:
-                        os.mkdir(B)
-                        try:
-                            shutil.move(i, B)
-                        except:
-                            print("\nDUPLICATE FILE !")
-                except:
-                    if BOOLEAN:
-                        pass
-                    else:
-                        try:
-                            shutil.move(i, B)
-                        except:
-                            print("\nDUPLICATE FILE !")
-            print("\nCOMPLETED.")
-            continue
-        except:
-            print("\nERROR !")
-            continue
-#----------------------------------------------------------------------------------------------------|
-    if INPUT == "SORT FF" or INPUT == "6":
-        try:
-            LIST_FOLDERSS = list()
-            LIST_FILESS = list()
-            for i in FILES:
-                BOOLEAN = os.path.isdir(i)
-                if BOOLEAN:
-                    if len(i) != 1:
-                        LIST_FOLDERSS.append(i)
-                else:
-                    LIST_FILESS.append(i)
-            for i in LIST_FOLDERSS:
-                for o in LIST_FILESS:
-                    if i.upper() in o.upper():
-                        shutil.move(o, i)
-            print("\nCOMPLETED.")
-            continue
-        except:
-            print("\nERROR !")
-            continue
-#----------------------------------------------------------------------------------------------------|
-    if INPUT == "SORT FOLDERS" or INPUT == "7":
-        try:
-            for i in FILES:
-                BOOLEAN = os.path.isdir(i)
-                try:
-                    EXT = re.findall(r".*", i)
-                    A = [0]
-                except:
-                    BOOLEAN = False
-                try:
-                    if BOOLEAN:
-                        os.mkdir("FOLDERS")
-                        try:
-                            shutil.move(i, "FOLDERS")
-                        except:
-                            print("\nDUPLICATE FILE !")
-                    else:
-                        pass
-                except:
-                    if BOOLEAN:
-                        try:
-                            shutil.move(i, "FOLDERS")
-                        except:
-                            print("\nDUPLICATE FILE !")
-            print("\nCOMPLETED.")
-            continue
-        except:
-            print("\nERROR !")
-            continue
-#----------------------------------------------------------------------------------------------------|
-    if INPUT == "UPPER PATH" or INPUT == "8":
-        try:
-            FOLDERS_PATH = list()
-            for i in FILES:
-                    os.rename(i, i.upper())
-            FILES = list(map(lambda X: X.upper(), FILES))
-            for i in FILES:
-                FOLDERS_PATH.append(i) if os.path.isdir(i) else None
-            for i in FOLDERS_PATH:
-                os.chdir(i)
-                NEW_FILES = os.listdir(os.getcwd())
-                for i in NEW_FILES:
-                    os.rename(i, i.upper())
-                os.chdir(PATH)
-            print("\nCOMPLETED.")
-            continue
-        except:
-            print("\nERROR !")
-            continue
-#----------------------------------------------------------------------------------------------------|
-    if INPUT == "CLEAR" or INPUT == "9":
-        try:
-            os.system("CLS" if os.name == "nt" else "clear")
-            continue
-        except:
-            print("\nERROR !")
-            continue
-#----------------------------------------------------------------------------------------------------|
-    if INPUT == "SELECT" or INPUT == "10":
-        try:
-            print()
-            COUNTER = 0
-            for i in FILES:
-                print(str(COUNTER) + "- " + i)
-                COUNTER +=1
-            COUNTER = 0
-            FILE = FILES[int(input("\nENTER THE FILE NUMBER: "))]
-            print("""
-|_____________________|COMMANDS|_____________________|
-|ENTER '0' OR 'LOWER' TO LOWERCASE THE SELECTED FILE.|
-|ENTER '1' OR 'UPPER' TO UPPERCASE THE SELECTED FILE.|
-|ENTER '2' OR 'ADD' TO ADD STH TO SELECTED FILENAME. |
-|ENTER '3' OR 'REMOVE' TO REMOVE THE SELECTED FILE.  |
-|____________________________________________________|""")
-            INPUT = input("\nINPUT FOR DO IN THIS FILE: ").upper()
-            BOOLEAN = False
-#----------------------------------------------------------------------------------------------------|
-            if INPUT == "LOWER" or INPUT == "0":
-                os.rename(FILE, FILE.lower())
-                BOOLEAN = True
-#----------------------------------------------------------------------------------------------------|
-            if INPUT == "UPPER" or INPUT == "1":
-                os.rename(FILE, FILE.upper())
-                BOOLEAN = True
-#----------------------------------------------------------------------------------------------------|
-            if INPUT == "ADD" or INPUT == "2":
-                ADD = input("\nPLEASE ENTER YOUR TEXT TO ADD IN FILE NAME: ")
-                ADD_LOCATION = input("\nOK YOU WANT ADD IT IN FIRST OR END OF FILE NAME? ")
-                if ADD_LOCATION == "FIRST":
-                    os.rename(FILE, ADD + "-" + FILE)
-                if ADD_LOCATION == "END":
-                    BOOLEAN = os.path.isdir(FILE)
-                    if BOOLEAN:
-                        os.rename(FILE, FILE + ADD)
-                    else:
-                        try:
-                            EXT = re.findall(r"(.*)(\..+)", FILE)
-                            A, B = EXT[0]
-                            os.rename(FILE, A + ADD + B)
-                        except:
-                            os.rename(FILE, FILE + ADD)
-                            print("\nWE GOT ERROR FOR THIS FILE ({0}) BUT WE DID THE JOB.".format(FILE))
-                BOOLEAN = True
-#----------------------------------------------------------------------------------------------------|
-            if INPUT == "REMOVE" or INPUT == "3":
-                CHECK = input("\nARE YOU SURE? (Y/N): ")
-                if CHECK == "Y" or "YES":
-                    try:
-                        os.remove(FILE)
-                    except:
-                        os.rmdir(FILE)
-                else:
-                    if CHECK == "N" or "NO":
-                        print("\nOK")
-                    else:
-                        print("\nWRONG INPUT !")
-                BOOLEAN = True
-#----------------------------------------------------------------------------------------------------|
-            if BOOLEAN:
-                print("\nCOMPLETED.")
-                continue
-            else:
-                print("\nWRONG INPUT !")
-                continue
-        except:
-            print("\nERROR !")
-            continue
-    if INPUT == "HELP" or INPUT == "11":
-        print("""
-|_____________________|COMMANDS|_____________________|
-|ENTER '00' OR 'FILES' TO SHOW FILES.                |
-|ENTER '01' OR 'LOWER' TO LOWERCASE ALL FILES.       |
-|ENTER '02' OR 'UPPER' TO UPPERCASE ALL FILES.       |
-|ENTER '03' OR 'REMOVE' TO REMOVE ALL FILES.         |
-|ENTER '04' OR 'ADD' TO ADD A TEXT TO FILENAMES.     |
-|ENTER '05' OR 'SORT' TO SORT THE FOLDER.            |
-|ENTER '06' OR 'SORT FF' TO SORT FILES WITH FOLDERS. |
-|ENTER '07' OR 'SORT FOLDER' TO SORT FOLDERS.        |
-|ENTER '08' OR 'UPPER FOLDERS' TO UPPERCASE 2 FOLDER.|
-|ENTER '09' OR 'CLEAR' TO CLEAR THE SHELL.           |
-|ENTER '10' OR 'SELECT' TO SELECT A FILE.            |  
-|ENTER '11' OR 'HELP' TO SHOW THE HELP COMMAND AGAIN.|
-|ENTER '12' OR 'EXIT' FOR EXIT OF THIS PROGRAM. :)   |
-|____________________________________________________|""")
+# @CODE_CO :) | TELEGRAM: @CODE_CO | GITHUB: CODE-CO | FROM '@CODE_CO' IMPORT 'MR PRO' |------------
+#---------------------------------------------------------------------------------------------------
+import os, re, shutil
+#---------------------------------------------------------------------------------------------------
+def PRINT_FILES():
+    print()
+    for i, o in enumerate(FILES, start=0):
+        print(str(i) + " - " + o)
+#---------------------------------------------------------------------------------------------------
+def LOWER():
+        list(map(lambda X: os.rename(X, X.lower()), FILES))
+        print("\nCOMPLETED.")
+#---------------------------------------------------------------------------------------------------
+def UPPER():
+        list(map(lambda X: os.rename(X, X.upper()), FILES))
+        print("\nCOMPLETED.")
+#---------------------------------------------------------------------------------------------------
+def REMOVE():
+    CHECK = input("\nARE YOU SURE THAT YOU WANT TO REMOVE ALL FILES OR FILES THAT YOU SELECTED IN SELECT MODE? (Y/N): ")
+    if CHECK == "YES" or "Y":
+        for i in FILES:
+            try:
+                os.remove(i)
+            except:
+                shutil.rmtree(i, ignore_errors=True)
+        print("\nFILES REMOVED.")
     else:
-        if INPUT == "EXIT" or INPUT == "12": 
-            pass
+        print("\nOK NO FILES WILL BE REMOVED.")
+#---------------------------------------------------------------------------------------------------
+def ADD_TEXT():
+    TEXT = input("\nPLEASE ENTER YOUR TEXT TO ADD IN FILES NAME: ")
+    LOCATION = input("\nOK YOU WANT ADD IT IN 'FIRST' OR 'END' OF THE FILES NAME? ")
+    if LOCATION == "FIRST":
+        list(map(lambda X: os.rename(X, TEXT + X), FILES))
+    elif LOCATION == "END":
+        for i in FILES:
+            if os.path.isdir(i):
+                os.rename(i, i + TEXT)
+            else:
+                EXTENSION = re.findall(r"(.*)(\..+)", i)
+                A, B = EXTENSION[0]
+                os.rename(i, A + TEXT + B)
+    else:
+        print("\nYOU HAVE NOT ENTERED 'FIRST' OR 'END' SO YOUR TEXT WILL NOT ADD !")
+    print("\nCOMPLETED.")
+#---------------------------------------------------------------------------------------------------
+def SORT():
+    for i in FILES:
+        if os.path.isfile(i):
+            try:
+                EXTENSION = ((re.findall(r"(.*)(\..+)", i))[0][1][1:]).upper()
+                if isinstance(EXTENSION, str):
+                    if EXTENSION not in FILES:
+                        os.mkdir(EXTENSION)
+                        FILES.append(EXTENSION)
+                try:
+                    shutil.move(i, EXTENSION)
+                except:
+                    print("\nDUPLICATE FILE !")
+            except:
+                pass
+    print("\nCOMPLETED.")
+#---------------------------------------------------------------------------------------------------
+def SORT_FF():
+    LIST_FOLDERS, LIST_FILES = list(), list()
+    for i in FILES:
+        if os.path.isdir(i):
+            if len(i) > 1:
+                LIST_FOLDERS.append(i)
         else:
-            print("\nWRONG INPUT ! ENTER 'HELP' OR '11' TO SHOW COMMANDS.")
-#----------------------------------------------------------------------------------------------------|
+            LIST_FILES.append(i)
+    for i in LIST_FOLDERS:
+        for o in LIST_FILES:
+            if i.upper() in o.upper():
+                try:
+                    shutil.move(o, i)
+                except:
+                    print("\nDUPLICATE FILE !")
+    print("\nCOMPLETED.")
+#---------------------------------------------------------------------------------------------------
+def SORT_FOLDERS():
+    if "FOLDERS" not in FILES:
+        os.mkdir("FOLDERS")
+    for i in FILES:
+        if os.path.isdir(i):
+            try:
+                shutil.move(i, "FOLDERS")
+            except:
+                print("\nDUPPLICATE !")
+    print("\nCOMPLETED.")
+#---------------------------------------------------------------------------------------------------
+def SELECT():
+    global FILES, INPUT
+    INDEX, FILE = str(), list()
+    print("\nUNTILL YOU HAVE NOT ENTERED 'END' WE WILL ASK YOU TO ENTER FILES NUMBER.")
+    PRINT_FILES()
+    print()
+    while INDEX != "END":
+        INDEX = input("ENTER THE FILE NUMBER: ").upper()
+        if INDEX != "END":
+            FILE.append(FILES[int(INDEX)])
+    FILES = list(dict.fromkeys(FILE))
+    if FILES == []:
+        print("\nYOU HAVE NOT SELECTED ANY FILES SO THERE IS NO OPTION TO SELECT !")
+    else:
+        print("""\n|_______________________|COMMANDS|________________________|\n|ENTER '1' OR 'LOWER' TO LOWERCASE SELECTED FILES.        |\n|ENTER '2' OR 'UPPER' TO UPPERCASE SELECTED FILES.        |\n|ENTER '3' OR 'REMOVE' TO REMOVE ALL SELECTED FILES.      |\n|ENTER '4' OR 'ADD' TO ADD A TEXT TO SELECTED FILES NAME. |\n|_________________________________________________________|""")
+        INPUT = input("\nINPUT FOR SELECTED FILES: ").upper()
+#---------------------------------------------------------------------------------------------------
+def HELP():
+    print("""|_____________________|COMMANDS|_____________________|\n|ENTER '00' OR 'FILES' TO SHOW FILES.                |\n|ENTER '01' OR 'LOWER' TO LOWERCASE ALL FILES.       |\n|ENTER '02' OR 'UPPER' TO UPPERCASE ALL FILES.       |\n|ENTER '03' OR 'REMOVE' TO REMOVE ALL FILES.         |\n|ENTER '04' OR 'ADD' TO ADD A TEXT TO FILES NAME.    |\n|ENTER '05' OR 'SORT' TO SORT THE CURRENT FOLDER.    |\n|ENTER '06' OR 'SORT FF' TO SORT FILES WITH FOLDERS. |\n|ENTER '07' OR 'SORT FOLDER' TO SORT FOLDERS.        |\n|ENTER '08' OR 'SELECT' TO SELECT FILES FROM LIST.   |\n|ENTER '09' OR 'HELP' TO SHOW THE HELP COMMAND.      |\n|ENTER '10' OR 'CLEAR' TO CLEAR THE SHELL.           |\n|ENTER '11' OR 'EXIT' TO EXIT OF THIS PROGRAM. :)    |\n|____________________________________________________|""")
+#---------------------------------------------------------------------------------------------------
+def CLEAR():
+    os.system("CLS" if os.name == "nt" else "clear")
+#---------------------------------------------------------------------------------------------------
+CLEAR(), HELP()
+#---------------------------------------------------------------------------------------------------
+while True:
+    INPUT = input("\nINPUT: ").upper()
+    FILES = list(os.listdir(os.getcwd()))
+    FILES.remove(os.path.basename(__file__))
+    if INPUT == "SELECT" or INPUT == "8":
+        SELECT()
+    if INPUT == "FILES" or INPUT == "0":
+        PRINT_FILES()
+    if INPUT == "LOWER" or INPUT == "1":
+        LOWER()
+    if INPUT == "UPPER" or INPUT == "2":
+        UPPER()
+    if INPUT == "REMOVE" or INPUT == "3":
+        REMOVE()
+    if INPUT == "ADD" or INPUT == "4":
+        ADD_TEXT()
+    if INPUT == "SORT" or INPUT == "5":
+        SORT()
+    if INPUT == "SORT FF" or INPUT == "6":
+        SORT_FF()
+    if INPUT == "SORT FOLDERS" or INPUT == "7":
+        SORT_FOLDERS()
+    if INPUT == "HELP" or INPUT == "9":
+        HELP()
+    if INPUT == "CLEAR" or INPUT == "10":
+        CLEAR()
+    if INPUT == "EXIT" or INPUT == "11":
+        break
 print("\nBYE :)\n")
