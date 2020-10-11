@@ -71,7 +71,7 @@ def SORT_FF():
             LIST_FILES.append(i)
     for i in LIST_FOLDERS:
         for o in LIST_FILES:
-            if i.upper() in o.upper():
+            if i.upper() in ((re.findall(r"(.*)(\..+)", o))[0][0]).upper():
                 try:
                     shutil.move(o, i)
                 except:
@@ -118,6 +118,7 @@ while True:
     INPUT = input("\nINPUT: ").upper()
     FILES = list(os.listdir(os.getcwd()))
     FILES.remove(os.path.basename(__file__))
+#---------------------------------------------------------------------------------------------------
     if INPUT == "SELECT" or INPUT == "8":
         SELECT()
     if INPUT == "FILES" or INPUT == "0":
@@ -142,4 +143,5 @@ while True:
         CLEAR()
     if INPUT == "EXIT" or INPUT == "11":
         break
+#---------------------------------------------------------------------------------------------------
 print("\nBYE :)\n")
